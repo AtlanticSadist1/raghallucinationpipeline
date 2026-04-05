@@ -1,0 +1,33 @@
+{
+  "rows": [
+    {
+      "id": "grounded",
+      "question": "What is the company's refund policy window?",
+      "response": "You can get a full refund within 30 days of purchase if the item is unused and in its original packaging.",
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.655426963634191,
+      "context_precision": 0.99999999995,
+      "hallucination_flag": false,
+      "flags": []
+    },
+    {
+      "id": "hallucination_example",
+      "question": "What is the company's refund policy window?",
+      "response": "The company offers lifetime free replacements and a 90-day money-back guarantee, no questions asked.",
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.6600965320591862,
+      "context_precision": 0.0,
+      "hallucination_flag": true,
+      "flags": [
+        "low_faithfulness",
+        "low_context_precision"
+      ]
+    }
+  ],
+  "aggregate": {
+    "faithfulness": 0.5,
+    "answer_relevancy": 0.6577617478466886,
+    "context_precision": 0.499999999975
+  },
+  "hallucination_count": 1
+}

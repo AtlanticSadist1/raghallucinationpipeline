@@ -1,0 +1,21 @@
+{
+  "items": [
+    {
+      "id": "grounded",
+      "question": "What is the company's refund policy window?",
+      "contexts": [
+        "Returns are accepted within 30 days of purchase for a full refund. Items must be unused and in original packaging.",
+        "Shipping is free on orders over $50."
+      ],
+      "response": "You can get a full refund within 30 days of purchase if the item is unused and in its original packaging."
+    },
+    {
+      "id": "hallucination_example",
+      "question": "What is the company's refund policy window?",
+      "contexts": [
+        "Returns are accepted within 30 days of purchase for a full refund. Items must be unused and in original packaging."
+      ],
+      "response": "The company offers lifetime free replacements and a 90-day money-back guarantee, no questions asked."
+    }
+  ]
+}
