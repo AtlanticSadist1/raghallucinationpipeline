@@ -296,3 +296,129 @@ You can also pass your own LangChain-compatible `llm` / `embeddings` into `Ragas
 ## Privacy note
 
 Inference stays on your machine (Ollama). Pulling models uses the network when you `ollama pull`; normal chat and evaluation traffic goes to your local Ollama server only, not to cloud LLM APIs from this codebase.
+
+---
+
+## Project Flowcharts
+
+### Project Overview
+
+```mermaid
+graph TD
+    A[RAG Hallucination Evaluation Pipeline] --> B[Local Ollama Models]
+    A --> C[Batch Evaluation]
+    A --> D[Browser Chat]
+    
+    B --> B1[Chat Model<br/>llama3.2/mistral/etc]
+    B --> B2[Embedding Model<br/>nomic-embed-text]
+    
+    C --> C1[JSON Input<br/>questions + contexts + responses]
+    C --> C2[Ragas Evaluation<br/>faithfulness, relevancy, context precision]
+    C --> C3[JSON Output<br/>scores + hallucination flags]
+    
+    D --> D1[PDF Upload<br/>document ingestion]
+    D --> D2[Chat Interface<br/>question answering]
+    D --> D3[Ragas Scores<br/>per response]
+    
+    C2 --> E[Ragas Metrics]
+    D3 --> E
+    
+    E --> E1[Faithfulness<br/>claims supported by context]
+    E --> E2[Answer Relevancy<br/>response matches question]
+    E --> E3[Context Precision<br/>context chunks were useful]
+```
+
+### Batch Evaluation Process
+
+```mermaid
+graph TD
+    A[run_eval.py] --> B[Parse CLI Arguments]
+    B --> C[Load JSON Input File]
+    C --> D[Initialize Ollama Models]
+    
+    D --> D1[Chat Model for Ragas]
+    D --> D2[Embedding Model for Relevancy]
+    
+    C --> E[Extract Items]
+    E --> E1[Question]
+    E --> E2[Contexts]
+    E --> E3[Response]
+    
+    F[RagasRagEvaluator] --> G[Evaluate Each Item]
+    G --> H[Faithfulness Check]
+    G --> I[Answer Relevancy Check]
+    G --> J[Context Precision Check]
+    
+    H --> K[Score 0.0-1.0]
+    I --> L[Score 0.0-1.0]
+    J --> M[Score 0.0-1.0]
+    
+    K --> N[Hallucination Flag]
+    N --> O[Faithfulness < threshold]
+    
+    P[Aggregate Results] --> Q[Write JSON Output]
+    Q --> R[Command Line or File]
+```
+
+### Browser Chat Process
+
+```mermaid
+graph TD
+    A[run_chat.py] --> B[Start Gradio Server]
+    B --> C[Initialize Models]
+    
+    C --> C1[Chat Model for Responses]
+    C --> C2[Embedding Model for Retrieval]
+    
+    D[User Uploads PDFs] --> E[Extract Text from PDFs]
+    E --> F[Chunk Text<br/>1200 chars, 200 overlap]
+    F --> G[Generate Embeddings<br/>for each chunk]
+    G --> H[Store in Memory<br/>chunks + embeddings]
+    
+    I[User Asks Question] --> J[Embed Question]
+    J --> K[Cosine Similarity Search]
+    K --> L[Retrieve Top-K Chunks]
+    
+    L --> M[Generate Answer<br/>using Chat Model]
+    M --> N[Evaluate with Ragas]
+    
+    N --> O[Faithfulness Score]
+    N --> P[Answer Relevancy Score]
+    N --> Q[Context Precision Score]
+    
+    R[Format Response] --> S[Answer + Ragas Scores]
+    S --> T[Display in Chat UI]
+```
+
+### Ragas Evaluation Process
+
+```mermaid
+graph TD
+    A[Ragas Evaluation Process] --> B[Input: Question + Contexts + Response]
+    
+    B --> C[Faithfulness Metric]
+    B --> D[Answer Relevancy Metric]  
+    B --> E[Context Precision Metric]
+    
+    C --> F[Break response into claims]
+    F --> G[Check each claim against contexts]
+    G --> H[LLM judges if claim is supported]
+    H --> I[Calculate faithfulness score<br/>0.0-1.0]
+    
+    D --> J[Embed question and response]
+    J --> K[Cosine similarity between embeddings]
+    K --> L[Calculate relevancy score<br/>0.0-1.0]
+    
+    E --> M[For each context chunk]
+    M --> N[LLM judges if chunk was useful<br/>for generating the response]
+    N --> O[Calculate precision score<br/>0.0-1.0]
+    
+    I --> P[Aggregate Scores]
+    L --> P
+    O --> P
+    
+    P --> Q[Hallucination Detection]
+    Q --> R[Faithfulness < threshold<br/>→ Hallucination Flag]
+    
+    P --> S[Output Scores + Flags]
+```
