@@ -5,7 +5,6 @@ import typing as t
 import numpy as np
 
 from rag_eval.evaluator import EvalItem, RagasRagEvaluator, default_local_llm_and_embeddings
-from rag_eval.guardrails import guard_text
 from rag_eval.pdf_text import chunk_text, extract_text_from_pdf
 
 if t.TYPE_CHECKING:
@@ -144,12 +143,6 @@ def launch_app(
                     "content": "Please load PDFs first (upload files and click **Load PDFs**).",
                 }
             )
-            return "", history, state
-
-        allowed, reason = guard_text(q)
-        if not allowed:
-            history.append({"role": "user", "content": q})
-            history.append({"role": "assistant", "content": reason or "This request cannot be processed."})
             return "", history, state
 
         chunks: list[str] = state["chunks"]

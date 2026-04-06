@@ -189,8 +189,7 @@ On Windows in JSON you can use doubled backslashes, e.g. `"policies\\handbook.pd
 5. In the UI:
    - Click **Context PDFs** and select one or more `.pdf` files.
    - Click **Load PDFs into knowledge base** and wait until the status says indexing finished.
-   - Type a question in **Your message** and submit. Unsafe or disallowed requests are blocked by built-in guardrails.
-   - The assistant answer includes a **Ragas** block at the bottom.
+   - Type a question in **Your message** and submit. The assistant answer includes a **Ragas** block at the bottom.
 6. Stop the server with **Ctrl+C** in the terminal.
 
 ### Optional CLI flags
