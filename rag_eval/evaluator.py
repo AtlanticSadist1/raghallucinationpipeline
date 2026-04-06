@@ -11,6 +11,7 @@ from ragas.dataset_schema import SingleTurnSample
 from ragas.run_config import RunConfig
 from ragas.metrics._answer_relevance import answer_relevancy
 from ragas.metrics._context_precision import context_utilization
+from rag_eval.guardrails import guard_text
 from ragas.metrics._faithfulness import faithfulness
 
 if t.TYPE_CHECKING:
@@ -274,6 +275,12 @@ def load_items_from_json(path: str | Path) -> list[EvalItem]:
             raise ValueError(
                 f"Entry {i}: need question (or query) and response (or answer)."
             )
+        allowed_q, reason_q = guard_text(str(q))
+        if not allowed_q:
+            raise ValueError(f"Entry {i}: unsafe question blocked: {reason_q}")
+        allowed_r, reason_r = guard_text(str(resp))
+        if not allowed_r:
+            raise ValueError(f"Entry {i}: unsafe response blocked: {reason_r}")
         if not ctx and not pdf_specs:
             raise ValueError(
                 f"Entry {i}: provide at least one of contexts (or sources) or context_pdfs."

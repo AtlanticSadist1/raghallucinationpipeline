@@ -1,12 +1,3 @@
-"""
-Browser chat: PDFs as context, grounded answers, Ragas scores on each reply.
-Uses local Ollama only (no cloud APIs). See README for `ollama pull` models.
-
-  .venv\\Scripts\\python run_chat.py
-
-Open http://127.0.0.1:7860 — upload PDFs, click **Load PDFs**, then chat.
-"""
-
 from __future__ import annotations
 
 import argparse

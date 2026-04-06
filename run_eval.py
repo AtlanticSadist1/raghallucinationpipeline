@@ -1,10 +1,3 @@
-"""
-CLI: evaluate a JSON batch with Ragas and write scored results + hallucination flags.
-
-Usage (Ollama running locally, models pulled — see README):
-  python run_eval.py examples\\sample_batch.json results.json
-  python run_eval.py examples\\sample_batch.json -o results.json
-"""
 
 from __future__ import annotations
 

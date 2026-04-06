@@ -37,7 +37,7 @@ def ollama_base_url() -> str:
 
 
 def ollama_chat_model() -> str:
-    return os.environ.get("OLLAMA_CHAT_MODEL", "mistral-7b-instruct-v0.1.Q4_0.gguf")
+    return os.environ.get("OLLAMA_CHAT_MODEL", "llama3.2")
 
 
 def ollama_embed_model() -> str:
